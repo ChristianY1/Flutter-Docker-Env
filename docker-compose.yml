@@ -1,0 +1,29 @@
+version: '3.8'
+services:
+  db:
+    build: db_postgres/
+    user: root
+    environment:
+      - POSTGRES_USER=flutter
+      - POSTGRES_PASSWORD=flutter@2024
+      - POSTGRES_DB=postgres_flutter
+    restart: always
+    volumes:
+      - ./postgres_flutter:/var/lib/postgresq/data
+    ports:
+      - "5433:5432"
+    networks:
+      - docker_flutter_net
+  flutter:
+    build: ubuntu_flutter/
+    command: ["sh", "-c", "while sleep 3600; do :; done"]  # Comando para mantener el contenedor en ejecución
+    networks:
+      - docker_flutter_net
+    depends_on:
+      - db
+    volumes:
+      - ./Proyectos_Flutter:/home/Proyectos_Flutter
+    restart: always
+
+networks:
+  docker_flutter_net:

@@ -1,0 +1,44 @@
+FROM ubuntu:latest
+
+RUN apt-get update && apt-get install openjdk-17-jdk -y \
+    nano \ 
+    curl \
+    clang \
+    cmake \
+    ninja-build \
+    pkg-config \
+    wget \
+    git \
+    libgtk-3-dev \
+    xz-utils \
+    zip \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /
+
+RUN mkdir -p /home/Proyectos_Flutter
+
+RUN chmod -R 777 /home/Proyectos_Flutter
+RUN chmod a+x /usr/local/
+
+
+COPY SDK_ANDROID_FLUTTER /usr/local/
+
+RUN git config --global --add safe.directory /user/local/flutter
+
+ENV PATH="$PATH:/usr/local/flutter/bin"
+
+RUN /usr/local/android_sdk/cmdline-tools/latest/bin/sdkmanager --update
+RUN yes | /usr/local/android_sdk/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-33"
+RUN /usr/local/android_sdk/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0"
+
+ENV  ANDROID_HOME="/usr/local/android_sdk"
+ENV  PATH=$PATH:$ANDROID_HOME/platform-tools
+
+RUN yes | flutter doctor --android-licenses
+
+
+
+
+
+

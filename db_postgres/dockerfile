@@ -1,0 +1,7 @@
+FROM postgres:latest
+
+RUN chmod -R 777 /var/lib/postgresql/data
+
+ENV TZ=America/Guayaquil
+
+EXPOSE 5432
